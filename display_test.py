@@ -44,6 +44,8 @@ def draw_half_circle_rounded(image, angle):
     
     cv2.ellipse(image, center, axes, 0, startAngle, angle-90, (80,255,0), thickness)
     
+increment = 1
+angle = 0
 
 while True:
    
