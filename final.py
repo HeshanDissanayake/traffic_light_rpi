@@ -2,6 +2,7 @@ import cv2
 import numpy as np
 import time
 from PIL import Image, ImageDraw 
+from controls import Controls
 
 cap = cv2.VideoCapture("http://192.168.1.5:8081/video")
 
@@ -17,13 +18,14 @@ PI = False
 
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
-
 SPI_SPEED_MHZ = 90
 
 image = Image.new("RGB", (240, 240), (255, 0, 255))
+controls = Controls()
+
+controls.newControl("hue", 0, 255, 65)
 
 if PI == True:
-
     import RPi.GPIO as GPIO
     from ST7789 import ST7789
     from picamera.array import PiRGBArray
@@ -70,6 +72,7 @@ while True:
 
     hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
 
+    hue = controls.getValues()['hue']
     lower_green = np.array([int(hue), 50, 50])
     upper_green = np.array([int(hue)+20, 255, 255])
 
@@ -106,12 +109,6 @@ while True:
     cv2.imshow("input", img)
 
     key = cv2.waitKey(10)
-
-    if key == ord('a'):
-        hue = (hue + 1)%255
-
-    if key == ord('d'):
-        hue = (hue - 1)%255
 
     t2 = time.time()
 
